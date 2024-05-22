@@ -11,9 +11,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface IssueAssigneeRepository extends CrudRepository<IssueAssignee, Long>, WithInsert<IssueAssignee> {
     Optional<IssueAssignee> findByIssueIdAndMemberId(Long issueId, String memberId);
 
-    @Query("SELECT member_id FROM issue_assignee where issue_id = :issueId")
-    List<String> findAllByIssueId(Long issueId);
-
     @Query("SELECT member_id FROM issue_assignee WHERE issue_id = :issueId")
     List<String> findAssigneeIdsByIssueId(Long issueId);
 
