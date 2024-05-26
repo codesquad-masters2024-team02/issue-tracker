@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import com.issuetracker.member.dto.MemberCreateDto;
 import com.issuetracker.member.entity.Member;
 import com.issuetracker.member.repository.MemberRepository;
+import com.issuetracker.member.util.MemberMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,7 +40,7 @@ class MemberServiceTest {
         when(memberRepository.insert(any(Member.class))).thenReturn(expectedMember);
 
         // when
-        Member actualMember = memberService.create(memberCreateDto);
+        Member actualMember = memberService.create(MemberMapper.toMember(memberCreateDto));
 
         // then
         assertThat(actualMember).isNotNull()

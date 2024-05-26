@@ -4,6 +4,7 @@ import com.issuetracker.member.dto.MemberCreateDto;
 import com.issuetracker.member.dto.SimpleMemberDto;
 import com.issuetracker.member.entity.Member;
 import com.issuetracker.member.service.MemberService;
+import com.issuetracker.member.util.MemberMapper;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -30,7 +31,7 @@ public class MemberController {
 
     @PostMapping
     public ResponseEntity<Member> createMember(@Valid @RequestBody MemberCreateDto memberCreateDto) {
-        Member member = memberService.create(memberCreateDto);
+        Member member = memberService.create(MemberMapper.toMember(memberCreateDto));
         URI location = URI.create(String.format("/api/members/%s", member.getId()));
         return ResponseEntity.created(location).body(member);
     }

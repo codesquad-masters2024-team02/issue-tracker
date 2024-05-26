@@ -2,7 +2,6 @@ package com.issuetracker.member.service;
 
 import com.issuetracker.file.dto.UploadedFileDto;
 import com.issuetracker.file.service.FileService;
-import com.issuetracker.member.dto.MemberCreateDto;
 import com.issuetracker.member.dto.SimpleMemberDto;
 import com.issuetracker.member.entity.Member;
 import com.issuetracker.member.exception.MemberNotFoundException;
@@ -28,8 +27,7 @@ public class MemberService {
      * 멤버의 아이디가 중복이 아니라면 새로운 멤버를 생성한다.
      */
     @Transactional
-    public Member create(MemberCreateDto memberCreateDto) {
-        Member member = MemberMapper.toMember(memberCreateDto);
+    public Member create(Member member) {
         Member created = memberRepository.insert(member);
 
         log.info("새로운 유저가 생성되었습니다. {}", created);

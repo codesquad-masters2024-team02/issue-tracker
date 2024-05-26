@@ -37,7 +37,7 @@ class MemberControllerTest {
         MemberCreateDto memberCreateDto = new MemberCreateDto("sangchu", "123", "상추", "sangchu@gmail.com");
         Member member = new Member("sangchu", "123", "상추", "sangchu@gmail.com", null);
         // Mock 서비스 레이어
-        when(memberService.create(ArgumentMatchers.any(MemberCreateDto.class))).thenReturn(member);
+        when(memberService.create(ArgumentMatchers.any(Member.class))).thenReturn(member);
 
         // MockMvc 요청 및 응답 검증
         String requestBody = objectMapper.writeValueAsString(memberCreateDto);
