@@ -8,21 +8,21 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class GithubProfile {
-    private String login;
+    private String id;
     private String nickname;
     private String email;
-    private String avatarUrl;
+    private String imgUrl;
 
     // 역직렬화할 때 사용
     @JsonSetter("login")
-    public void setLogin(String login) {
-        this.login = login;
+    public void setId(String id) {
+        this.id = id;
     }
 
     // 직렬화할 때 사용
     @JsonGetter("id")
-    public String getLogin() {
-        return login;
+    public String getId() {
+        return id;
     }
 
     @JsonSetter("name")
@@ -46,12 +46,12 @@ public class GithubProfile {
     }
 
     @JsonSetter("avatar_url")
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
     @JsonGetter("imgUrl")
-    public String getAvatarUrl() {
-        return avatarUrl;
+    public String getImgUrl() {
+        return imgUrl;
     }
 }
