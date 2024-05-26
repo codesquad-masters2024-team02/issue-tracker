@@ -60,6 +60,19 @@ public class MemberService {
         return MemberMapper.toSimpleMemberDto(member, imgUrl);
     }
 
+    /**
+     * 회원가입되어 있는 사용자인지 확인한다.
+     */
+    @Transactional(readOnly = true)
+    public boolean isNewUser(String id) {
+        try {
+            getMemberOrThrow(id);
+        } catch (MemberNotFoundException e) {
+            return true;
+        }
+        return false;
+    }
+
     private boolean isUserDeactivated(String id) {
         return !StringUtils.hasText(id);
     }

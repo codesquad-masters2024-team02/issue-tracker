@@ -12,6 +12,7 @@ import com.issuetracker.member.repository.MemberRepository;
 import com.issuetracker.member.util.JwtUtil;
 import com.issuetracker.member.util.MemberMapper;
 import com.issuetracker.member.util.TokenStoreManager;
+import com.issuetracker.oauth.dto.GithubProfile;
 import io.jsonwebtoken.Claims;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -39,14 +40,8 @@ public class LoginService {
         Member targetMember = findTargetMember(idValue);
         validatePassword(targetMember, passwordValue);
 
-        String imgUrl = getImgUrl(targetMember);
-        SimpleMemberDto memberProfile = MemberMapper.toSimpleMemberDto(targetMember, imgUrl);
-
-        String accessToken = jwtUtil.createAccessToken(idValue);
-        String refreshToken = jwtUtil.createRefreshToken(idValue);
-
-        tokenStoreManager.saveRefreshToken(idValue, refreshToken, JwtUtil.REFRESH_EXPIRATION_TIME);
-        TokenResponse tokenResponse = new TokenResponse(accessToken, refreshToken);
+        SimpleMemberDto memberProfile = getMemberProfile(targetMember);
+        TokenResponse tokenResponse = generateToken(idValue);
 
         log.info("멤버가 로그인하였습니다. {}", idValue);
         return new LoginResponse(memberProfile, tokenResponse);
@@ -88,6 +83,20 @@ public class LoginService {
         log.info("멤버가 로그아웃 하였습니다. {}", memberId);
     }
 
+    /**
+     * 사용자의 유저정보와 토큰을 반환하고 리프레시 토큰을 redis에 저장합니다.
+     */
+    public LoginResponse githubLogin(GithubProfile profile) {
+        String idValue = profile.getId();
+        Member targetMember = findTargetMember(idValue);
+
+        SimpleMemberDto memberProfile = getMemberProfile(targetMember);
+        TokenResponse tokenResponse = generateToken(idValue);
+
+        log.info("멤버가 로그인하였습니다. {}", idValue);
+        return new LoginResponse(memberProfile, tokenResponse);
+    }
+
     private Member findTargetMember(String idValue) {
         Optional<Member> optionalMember = memberRepository.findById(idValue);
         if (optionalMember.isEmpty()) {
@@ -118,5 +127,18 @@ public class LoginService {
         if (!refreshToken.equals(storeRefreshToken)) {
             throw new UnauthorizedException();
         }
+    }
+
+    private SimpleMemberDto getMemberProfile(Member targetMember) {
+        String imgUrl = getImgUrl(targetMember);
+        return MemberMapper.toSimpleMemberDto(targetMember, imgUrl);
+    }
+
+    private TokenResponse generateToken(String userId) {
+        String accessToken = jwtUtil.createAccessToken(userId);
+        String refreshToken = jwtUtil.createRefreshToken(userId);
+
+        tokenStoreManager.saveRefreshToken(userId, refreshToken, JwtUtil.REFRESH_EXPIRATION_TIME);
+        return new TokenResponse(accessToken, refreshToken);
     }
 }
