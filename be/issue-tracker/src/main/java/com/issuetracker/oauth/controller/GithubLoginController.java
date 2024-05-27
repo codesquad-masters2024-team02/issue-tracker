@@ -1,5 +1,6 @@
 package com.issuetracker.oauth.controller;
 
+import com.issuetracker.file.dto.UploadedFileDto;
 import com.issuetracker.file.service.FileService;
 import com.issuetracker.file.util.ImgUrlConverter;
 import com.issuetracker.member.dto.LoginResponse;
@@ -32,8 +33,8 @@ public class GithubLoginController {
 
         // 처음 사용자가 깃허브 로그인을 하는 것이라면 회원가입 로직을 수행한다.
         if (memberService.isNewUser(profile.getId())) {
-            memberService.create(MemberMapper.toMemberCreateDto(profile));
-            fileService.uploadFile(ImgUrlConverter.toMultipartFile(profile.getImgUrl()));
+            UploadedFileDto file = fileService.uploadFile(ImgUrlConverter.toMultipartFile(profile.getImgUrl()));
+            memberService.create(MemberMapper.toMember(profile, file.getId()));
         }
         LoginResponse loginResponse = loginService.githubLogin(profile);
         return ResponseEntity.ok().body(loginResponse);

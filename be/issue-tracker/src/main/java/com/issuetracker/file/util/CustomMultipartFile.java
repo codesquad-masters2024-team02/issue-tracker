@@ -5,12 +5,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import org.apache.tika.Tika;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
  * byte 배열을 MultipartFile 객체로 변환하기 위한 클래스
  */
 public class CustomMultipartFile implements MultipartFile {
+    private final Tika tika = new Tika();
+
     private byte[] input;
     private String filename;
 
@@ -21,7 +24,7 @@ public class CustomMultipartFile implements MultipartFile {
 
     @Override
     public String getName() {
-        return null;
+        return filename;
     }
 
     @Override
@@ -31,7 +34,11 @@ public class CustomMultipartFile implements MultipartFile {
 
     @Override
     public String getContentType() {
-        return null;
+        try {
+            return tika.detect(getInputStream());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

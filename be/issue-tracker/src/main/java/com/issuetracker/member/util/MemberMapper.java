@@ -13,9 +13,9 @@ public class MemberMapper {
                 memberCreateDto.getNickname(), memberCreateDto.getEmail(), null);
     }
 
-    public static MemberCreateDto toMemberCreateDto(GithubProfile profile) {
+    public static Member toMember(GithubProfile profile, Long fileId) {
         String uuidPw = UUID.randomUUID().toString().substring(0, 12); // 깃허브로 가입한 사용자는 비밀번호를 UUID로 설정
-        return new MemberCreateDto(profile.getId(), uuidPw, profile.getNickname(), profile.getEmail());
+        return new Member(profile.getId(), uuidPw, profile.getNickname(), profile.getEmail(), fileId);
     }
 
     public static SimpleMemberDto toSimpleMemberDto(Member member, String imgUrl) {
