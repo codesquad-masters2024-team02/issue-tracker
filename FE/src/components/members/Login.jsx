@@ -61,17 +61,10 @@ export default function Login() {
     };
 
     const handleGithubLogin = async () => {
-        // const loginResult = await fetchGithubLogin();
-        // localStorage.setItem('storeUserData', JSON.stringify(loginResult.data));
-        // console.log(loginResult);
-
         const CLIENT_ID = 'Ov23liTzJL66RbPZt3fg';
-        // const REDIRECT_URI = `${import.meta.env.VITE_TEAM_SERVER}/api/oauth/github/callback`;
         const REDIRECT_URI = `${import.meta.env.VITE_TEAM_CLIENT}/members/callback`;
-
         const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}`;
 
-        // window.location.assign(githubAuthUrl);
         window.location.href = githubAuthUrl;
     };
 

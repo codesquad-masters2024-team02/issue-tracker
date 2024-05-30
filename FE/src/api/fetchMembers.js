@@ -36,18 +36,18 @@ export const fetchLogin = async ({ id, password }) => {
     - 데이터 바인딩 실패: 400
     - 로그인 실패 : 401
  */
-export const fetchGithubLogin = async () => {
+export const fetchGithubLogin = async (code) => {
     try {
-        const CLIENT_ID = 'Ov23liTzJL66RbPZt3fg';
-        const REDIRECT_URI = `${import.meta.env.VITE_TEAM_CLIENT}/members/callback`;
-        const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}`;
-
-        // https://github.com/login/oauth/authorize?client_id=Ov23liTzJL66RbPZt3fg&redirect_uri=https://api.issue-tracker.site/api/oauth/github/callback
-        // https://github.com/login/oauth/authorize?client_id=Ov23liTzJL66RbPZt3fg&redirect_uri={server 주소}/api/oauth/github/callback
-
-        const response = await fetch(githubAuthUrl, {
+        const GITHUB_AUTH_URI = '/api/oauth/github/callback';
+        const response = await fetch(`${import.meta.env.VITE_TEAM_SERVER}${GITHUB_AUTH_URI}?code=${code}`, {
             method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id, password }),
         });
+
+        // https://api.issue-tracker.site /api/oauth/github/callback?code=3ebad6711591fc1d8192
 
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
