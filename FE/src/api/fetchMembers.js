@@ -41,13 +41,7 @@ export const fetchGithubLogin = async (code) => {
         const GITHUB_AUTH_URI = '/api/oauth/github/callback';
         const response = await fetch(`${import.meta.env.VITE_TEAM_SERVER}${GITHUB_AUTH_URI}?code=${code}`, {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ id, password }),
         });
-
-        // https://api.issue-tracker.site /api/oauth/github/callback?code=3ebad6711591fc1d8192
 
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 

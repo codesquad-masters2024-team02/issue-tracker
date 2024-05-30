@@ -15,6 +15,7 @@ export default function AuthLoadingPage() {
                 const loginResult = await fetchGithubLogin(authorizationCode);
 
                 if (loginResult.result) {
+                    console.log(loginResult.data);
                     localStorage.setItem('storeUserData', JSON.stringify(loginResult.data));
                     navigate('/');
                 }
