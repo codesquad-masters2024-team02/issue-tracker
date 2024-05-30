@@ -1,3 +1,5 @@
+import { getAccessToken } from '../utils/userUtils';
+
 const LABEL_DEFAULT_API_URI = '/api/labels';
 const HOME_DEFAULT_API_URI = '/api/home/components';
 
@@ -10,9 +12,15 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
  *  - 성공: 200
  */
 export const fetchLabelMilestoneCountData = async () => {
+    const accessToken = getAccessToken();
     try {
         // await delay(2000);
-        const response = await fetch(`${import.meta.env.VITE_TEAM_SERVER}${HOME_DEFAULT_API_URI}`);
+        const response = await fetch(`${import.meta.env.VITE_TEAM_SERVER}${HOME_DEFAULT_API_URI}`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                credentials: 'include',
+            },
+        });
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
         if (response.status === 200 || response.status === 201) {
@@ -28,9 +36,15 @@ export const fetchLabelMilestoneCountData = async () => {
  * @returns {jsonObject}
  */
 export const fetchLabelDetailData = async () => {
+    const accessToken = getAccessToken();
     try {
         // await delay(2000);
-        const response = await fetch(`${import.meta.env.VITE_TEAM_SERVER}${LABEL_DEFAULT_API_URI}`);
+        const response = await fetch(`${import.meta.env.VITE_TEAM_SERVER}${LABEL_DEFAULT_API_URI}`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                credentials: 'include',
+            },
+        });
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
         if (response.status === 200 || response.status === 201) {
@@ -55,12 +69,15 @@ export const fetchLabelDetailData = async () => {
     - 존재하지 않는 라벨 아이디: 404
  */
 export const fetchModifyLabel = async (name, descriptionParam, textColor, bgColor, labelId) => {
+    const accessToken = getAccessToken();
     const description = descriptionParam || null;
     try {
         const response = await fetch(`${import.meta.env.VITE_TEAM_SERVER}${LABEL_DEFAULT_API_URI}/${labelId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+                'credentials': 'include',
             },
             body: JSON.stringify({ name, description, textColor, bgColor }),
         });
@@ -88,11 +105,14 @@ export const fetchModifyLabel = async (name, descriptionParam, textColor, bgColo
 - 존재하지 않는 라벨 아이디: 404
  */
 export const fetchDeleteLabel = async (labelId) => {
+    const accessToken = getAccessToken();
     try {
         const response = await fetch(`${import.meta.env.VITE_TEAM_SERVER}${LABEL_DEFAULT_API_URI}/${labelId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+                'credentials': 'include',
             },
         });
 
@@ -120,12 +140,15 @@ export const fetchDeleteLabel = async (labelId) => {
     - 라벨 이름 중복: 409 
  */
 export const fetchCreateNewLabel = async (name, descriptionParam, textColor, bgColor) => {
+    const accessToken = getAccessToken();
     const description = descriptionParam || null;
     try {
         const response = await fetch(`${import.meta.env.VITE_TEAM_SERVER}${LABEL_DEFAULT_API_URI}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+                'credentials': 'include',
             },
             body: JSON.stringify({ name, description, textColor, bgColor }),
         });

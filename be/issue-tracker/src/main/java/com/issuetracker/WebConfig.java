@@ -22,6 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOriginPatterns("https://issue-tracker.site", "http://192.168.1.19:3000")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
+                .allowedOriginPatterns("*")
                 .allowedHeaders("*")
                 .allowCredentials(true);
     }
