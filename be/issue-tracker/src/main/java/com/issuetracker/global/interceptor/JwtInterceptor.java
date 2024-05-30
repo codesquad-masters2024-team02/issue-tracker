@@ -20,6 +20,10 @@ public class JwtInterceptor implements HandlerInterceptor {
         String authorization = request.getHeader("Authorization");
         String accessToken = jwtUtil.extractJwtToken(authorization);
 
+        log.info("bearer - {}", request.getHeader("Bearer"));
+        log.info("authorization - {}", authorization);
+        log.info("accessToken - {}", accessToken);
+
         if (accessToken == null) {
             throw new UnauthorizedException();
         }
