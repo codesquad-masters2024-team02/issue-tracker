@@ -5,6 +5,7 @@ import com.issuetracker.member.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Iterator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -19,6 +20,12 @@ public class JwtInterceptor implements HandlerInterceptor {
             throws Exception {
         String authorization = request.getHeader("Authorization");
         String accessToken = jwtUtil.extractJwtToken(authorization);
+        Iterator<String> headerNames = request.getHeaderNames().asIterator();
+        while ((headerNames.hasNext())) {
+            String next = headerNames.next();
+            String header = request.getHeader(next);
+            log.info("header - {}", header);
+        }
 
         log.info("bearer - {}", request.getHeader("Bearer"));
         log.info("authorization - {}", authorization);
