@@ -105,6 +105,7 @@ export const fetchIssueListData = async (isClosedParam, authorIdParam, assigneeI
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                     credentials: 'include',
+                    Origin: 'https://issue-tracker.site',
                 },
             }
         );

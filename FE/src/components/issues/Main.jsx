@@ -80,7 +80,6 @@ export default function Main() {
     const { data: milestonesFilter, isLoading: milestonesFilterIsLoading } = useMilestonesFilter({ enabled: hasFetched.milestone });
     const { data: membersFilter, isLoading: membersFilterIsLoading } = useMembersFilter({ enabled: hasFetched.assignee });
 
-
     const clearFilter = () => dispatch({ type: 'SET_CLEAR_FILTER', payload: '' });
 
     const isFilterActive = () => {
@@ -203,12 +202,6 @@ export default function Main() {
         setMilestoneCount(countData.milestoneCount.isOpened + countData.milestoneCount.isClosed);
     }, [countData]);
 
-    // useEffect(() => {
-    //     const url = new URL(window.location.href);
-    //     const authorizationCode = url.searchParams.get('code');
-    //     console.log(authorizationCode); //인증 코드
-    // }, []);
-
     return (
         <MainContainer>
             <StyledNav>
@@ -309,6 +302,7 @@ const StyledNewIssueBtn = styled(CustomButton)`
     font-size: 15px;
     font-weight: 500;
     color: #fff;
+    margin-left: 10px;
 `;
 
 const StyledMilestoneBtn = styled(CustomButton)`
