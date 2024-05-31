@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.Iterator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 @RequiredArgsConstructor
@@ -20,6 +21,12 @@ public class JwtInterceptor implements HandlerInterceptor {
             throws Exception {
         String authorization = request.getHeader("Authorization");
         String accessToken = jwtUtil.extractJwtToken(authorization);
+
+        log.info("Method - {}", request.getMethod());
+        if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
+            return true;
+        }
+
         Iterator<String> headerNames = request.getHeaderNames().asIterator();
         while ((headerNames.hasNext())) {
             String next = headerNames.next();
